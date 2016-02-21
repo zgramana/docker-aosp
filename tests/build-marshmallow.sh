@@ -4,12 +4,12 @@
 #
 # Example invocation:
 #
-# $ AOSP_VOL=$PWD/build ./build-lollipop.sh
+# $ AOSP_VOL=$PWD/build ./build-marshmallow.sh
 #
 set -ex
 
 if [ "$1" = "docker" ]; then
-    TEST_BRANCH=${TEST_BRANCH:-android-5.0.2_r1}
+    TEST_BRANCH=${TEST_BRANCH:-android-6.0.1_r16}
     TEST_URL=${TEST_URL:-https://android.googlesource.com/platform/manifest}
 
     cpus=$(grep ^processor /proc/cpuinfo | wc -l)
@@ -22,13 +22,13 @@ if [ "$1" = "docker" ]; then
     prebuilts/misc/linux-x86/ccache/ccache -M 10G
 
     source build/envsetup.sh
-    lunch aosp_arm-eng
+    lunch aosp_angler-userdebug
     make -j $cpus
 else
-    aosp_url="https://raw.githubusercontent.com/kylemanna/docker-aosp/master/utils/aosp"
+    aosp_url="https://raw.githubusercontent.com/zgramana/docker-aosp/master/utils/aosp"
     args="bash run.sh docker"
     export AOSP_EXTRA_ARGS="-v $(cd $(dirname $0) && pwd -P)/$(basename $0):/usr/local/bin/run.sh:ro"
-    export AOSP_IMAGE="kylemanna/aosp:5.0-lollipop"
+    export AOSP_IMAGE="zgramana/aosp:6.0-marshmallow"
 
     #
     # Try to invoke the aosp wrapper with the following priority:
